@@ -1,0 +1,84 @@
+<app-navbar />
+<div class="container mt-5">
+  <button class="btn btn-lg btn-outline-primary" (click)="create_new(content)">
+    Create New
+  </button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Abbr</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reftax of reftaxs">
+        <td>{{ reftax.id }}</td>
+        <td>{{ reftax.name }}</td>
+        <td>{{ reftax.abbr }}</td>
+        <td>
+          <button
+            class="btn btn-warning me-2"
+            (click)="editRefTax(reftax, content)"
+          >
+            Edit
+          </button>
+
+          <button class="btn btn-danger" (click)="deleteRefTax(reftax.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        {{ selectedRefTax?.id ? "Edit RefTax" : "Create New RefTax" }}
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedRefTax.name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="abbr" class="form-label">RefTaxname</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedRefTax.abbr"
+            name="abbr"
+            required
+          />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.close('Save click')"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" (click)="saveRefTax(modal)">
+        {{ selectedRefTax?.id ? "Update" : "Create" }}
+      </button>
+    </div>
+  </ng-template>
+</div>

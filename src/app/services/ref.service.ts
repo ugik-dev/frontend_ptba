@@ -22,4 +22,11 @@ export class RefService {
   getPermission(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}permission`, { headers: this.getAuthHeaders() });
   }
+
+  getTax(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}tax`, { headers: this.getAuthHeaders() });
+  }
+  getSubTax(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}sub-tax`, { headers: this.getAuthHeaders() });
+  }
 }

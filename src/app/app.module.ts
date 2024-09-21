@@ -10,6 +10,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ManageRolesComponent } from './manage-roles/manage-roles.component';
+import { RefCatTaxComponent } from './ref-cat-tax/ref-cat-tax.component';
+import { RefSubCatTaxComponent } from './ref-sub-cat-tax/ref-sub-cat-tax.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { ManageRolesComponent } from './manage-roles/manage-roles.component';
     DashboardComponent,
     NavbarComponent,
     ManageUsersComponent,
-    ManageRolesComponent
+    ManageRolesComponent,
+    RefCatTaxComponent,
+    RefSubCatTaxComponent
   ],
   imports: [
     BrowserModule,
