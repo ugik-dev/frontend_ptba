@@ -1,10 +1,14 @@
 <app-navbar />
 <div class="container mt-5">
+  <button class="btn btn-lg btn-outline-primary" (click)="create_new(content)">
+    Create New
+  </button>
   <table class="table">
     <thead>
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Name</th>
+        <th scope="col">Role</th>
         <th scope="col">Username</th>
         <th scope="col">Email</th>
         <th scope="col">Action</th>
@@ -14,16 +18,106 @@
       <tr *ngFor="let user of users">
         <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
+        <td>{{ user.role_title }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>
-          <!-- <button class="btn btn-danger"
-           (click)="deleteUser(user.id)"
-           >
+          <button class="btn btn-warning" (click)="editUser(user, content)">
+            Edit
+          </button>
+
+          <button class="btn btn-danger" (click)="deleteUser(user.id)">
             Delete
-          </button> -->
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        {{ selectedUser?.id ? "Edit User" : "Create New User" }}
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedUser.name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedUser.username"
+            name="username"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="selectedUser.email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="selectedUser.password"
+            name="password"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="role" class="form-label">Role</label>
+          <select
+            class="form-select"
+            [(ngModel)]="selectedUser.role_id"
+            name="role"
+            required
+          >
+            <option *ngFor="let role of roles" [value]="role.id">
+              {{ role.name }}
+            </option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.close('Save click')"
+      >
+        Close
+      </button>
+
+      <button type="button" class="btn btn-primary" (click)="saveUser(modal)">
+        {{ selectedUser?.id ? "Update" : "Create" }}
+      </button>
+    </div>
+  </ng-template>
+
+  <hr />
+
+  <pre>{{ closeResult }}</pre>
 </div>

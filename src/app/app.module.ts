@@ -8,6 +8,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ManageRolesComponent } from './manage-roles/manage-roles.component';
 
 @NgModule({
   declarations: [
@@ -15,13 +17,15 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
     LoginComponent,
     DashboardComponent,
     NavbarComponent,
-    ManageUsersComponent
+    ManageUsersComponent,
+    ManageRolesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     provideClientHydration()

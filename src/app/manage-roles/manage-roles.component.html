@@ -1,0 +1,142 @@
+<app-navbar />
+<div class="container mt-5">
+  <button class="btn btn-lg btn-outline-primary" (click)="create_new(content)">
+    Create New
+  </button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Title</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let role of roles">
+        <td>{{ role.id }}</td>
+        <td>{{ role.name }}</td>
+        <td>{{ role.title }}</td>
+        <td>
+          <button class="btn btn-warning" (click)="editRole(role, content)">
+            Edit
+          </button>
+
+          <button class="btn btn-danger" (click)="deleteRole(role.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        {{ selectedRole?.id ? "Edit Role" : "Create New Role" }}
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedRole.name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedRole.title"
+            name="title"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <table class="table table-bordered w-100">
+            <thead>
+              <tr>
+                <th scope="col">Permission</th>
+                <th scope="col">Show</th>
+                <th scope="col">Create</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let permission of permissions">
+                <td>{{ permission.name }}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="selectedRole?.permissions?.[permission.id]?.show === 'Y'"
+                    (change)="onPermissionChange(permission.id, 'show', $event)"
+                    name="permission[{{ permission.id }}]['show']"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="selectedRole?.permissions?.[permission.id]?.can_create === 'Y'"
+                    (change)="
+                      onPermissionChange(permission.id, 'can_create', $event)
+                    "
+                    name="permission[{{ permission.id }}]['can_create']"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="selectedRole?.permissions?.[permission.id]?.can_update === 'Y'"
+                    (change)="
+                      onPermissionChange(permission.id, 'can_update', $event)
+                    "
+                    name="permission[{{ permission.id }}]['can_update']"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="selectedRole?.permissions?.[permission.id]?.can_delete === 'Y'"
+                    (change)="
+                      onPermissionChange(permission.id, 'can_delete', $event)
+                    "
+                    name="permission[{{ permission.id }}]['can_delete']"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.close('Save click')"
+      >
+        Close
+      </button>
+
+      <button type="button" class="btn btn-primary" (click)="saveRole(modal)">
+        {{ selectedRole?.id ? "Update" : "Create" }}
+      </button>
+    </div>
+  </ng-template>
+
+  <hr />
+
+  <pre>{{ closeResult }}</pre>
+</div>

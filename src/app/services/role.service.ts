@@ -7,8 +7,8 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-  private baseUrl = `${env.baseUrl}/user`;
+export class RoleService {
+  private baseUrl = `${env.baseUrl}/role`;
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getAuthHeaders(): HttpHeaders {
@@ -16,16 +16,21 @@ export class UserService {
   }
   // constructor(private http: HttpClient) { }
 
-  getUsers(): Observable<any> {
+  get(): Observable<any> {
     return this.http.get<any>(this.baseUrl, { headers: this.getAuthHeaders() });
   }
-  createUser(userData: any): Observable<any> {
+  getRolePermission(roleId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/permission/${roleId}`, { headers: this.getAuthHeaders() });
+  }
+  create(userData: any): Observable<any> {
     return this.http.post(this.baseUrl, userData, { headers: this.getAuthHeaders() });
   }
-  updateUser(userId: number, userData: any): Observable<any> {
+  update(userId: number, userData: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/${userId}`, userData, { headers: this.getAuthHeaders() });
   }
-  deleteUser(userId: number): Observable<any> {
+  delete(userId: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${userId}`, { headers: this.getAuthHeaders() });
   }
+
+
 }
