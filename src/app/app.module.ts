@@ -12,6 +12,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ManageRolesComponent } from './manage-roles/manage-roles.component';
 import { RefCatTaxComponent } from './ref-cat-tax/ref-cat-tax.component';
 import { RefSubCatTaxComponent } from './ref-sub-cat-tax/ref-sub-cat-tax.component';
+import { DepositComponent } from './deposit/deposit.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RefSubCatTaxComponent } from './ref-sub-cat-tax/ref-sub-cat-tax.compone
     ManageUsersComponent,
     ManageRolesComponent,
     RefCatTaxComponent,
-    RefSubCatTaxComponent
+    RefSubCatTaxComponent,
+    DepositComponent
   ],
   imports: [
     BrowserModule,

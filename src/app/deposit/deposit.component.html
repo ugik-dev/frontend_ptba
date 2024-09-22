@@ -1,0 +1,91 @@
+<app-navbar />
+<div class="container mt-5">
+  <button class="btn btn-lg btn-outline-primary" (click)="create_new(content)">
+    Create New
+  </button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Kategori</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let deposit of depositData">
+        <td>{{ deposit.id }}</td>
+        <td>{{ deposit.name }}</td>
+        <td>{{ deposit.ref_tax_abbr }}</td>
+        <td>
+          <button
+            class="btn btn-warning me-2"
+            (click)="editDeposit(deposit, content)"
+          >
+            Edit
+          </button>
+
+          <button class="btn btn-danger" (click)="deleteDeposit(deposit.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        {{ selectedDeposit?.id ? "Edit Deposit" : "Create New Deposit" }}
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedDeposit.name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="role" class="form-label">Role</label>
+          <select
+            class="form-select"
+            [(ngModel)]="selectedDeposit.ref_tax_id"
+            name="role"
+            required
+          >
+            <option *ngFor="let refTax of refTaxs" [value]="refTax.id">
+              {{ refTax.name }}
+            </option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.close('Save click')"
+      >
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="saveDeposit(modal)"
+      >
+        {{ selectedDeposit?.id ? "Update" : "Create" }}
+      </button>
+    </div>
+  </ng-template>
+</div>
