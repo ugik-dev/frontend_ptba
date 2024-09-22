@@ -1,0 +1,109 @@
+<app-navbar />
+<div class="container mt-5">
+  <button class="btn btn-lg btn-outline-primary" (click)="create_new(content)">
+    Create New
+  </button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Kategori</th>
+        <th scope="col">Province</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let region of regions">
+        <td>{{ region.id }}</td>
+        <td>{{ region.name }}</td>
+        <td>{{ region.ref_region_name }}</td>
+        <td>{{ region.province_name }}</td>
+        <td>
+          <button
+            class="btn btn-warning me-2"
+            (click)="editRegion(region, content)"
+          >
+            Edit
+          </button>
+
+          <button class="btn btn-danger" (click)="deleteRegion(region.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        {{ selectedRegion?.id ? "Edit Region" : "Create New Region" }}
+      </h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedRegion.name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="ref_region_id" class="form-label">Katergori</label>
+          <select
+            class="form-select"
+            [(ngModel)]="selectedRegion.ref_region_id"
+            (change)="onCategoryChange()"
+            name="ref_region_id"
+            required
+          >
+            <option value="" disabled selected>Pilih Kategori</option>
+            <option *ngFor="let refRegion of refRegions" [value]="refRegion.id">
+              {{ refRegion.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="province" class="form-label">Province</label>
+          <select
+            class="form-select"
+            [disabled]="selectedRegion.ref_region_id != '3'"
+            [required]="selectedRegion.ref_region_id == '3'"
+            [(ngModel)]="selectedRegion.parent_id"
+            name="province"
+          >
+            <option value="">-</option>
+            <option
+              *ngFor="let refProvince of refProvinces"
+              [value]="refProvince.id"
+            >
+              {{ refProvince.name }}
+            </option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.close('Save click')"
+      >
+        Close
+      </button>
+      <button type="button" class="btn btn-primary" (click)="saveRegion(modal)">
+        {{ selectedRegion?.id ? "Update" : "Create" }}
+      </button>
+    </div>
+  </ng-template>
+</div>

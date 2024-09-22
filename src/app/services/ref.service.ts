@@ -29,4 +29,13 @@ export class RefService {
   getSubTax(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}sub-tax`, { headers: this.getAuthHeaders() });
   }
+
+  getRegion(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}region`, { headers: this.getAuthHeaders() });
+  }
+
+  getProvince(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}region/province/`, { headers: this.getAuthHeaders() });
+  }
+
 }

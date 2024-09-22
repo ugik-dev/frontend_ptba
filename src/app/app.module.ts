@@ -13,6 +13,7 @@ import { ManageRolesComponent } from './manage-roles/manage-roles.component';
 import { RefCatTaxComponent } from './ref-cat-tax/ref-cat-tax.component';
 import { RefSubCatTaxComponent } from './ref-sub-cat-tax/ref-sub-cat-tax.component';
 import { DepositComponent } from './deposit/deposit.component';
+import { ManageRegionsComponent } from './manage-regions/manage-regions.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DepositComponent } from './deposit/deposit.component';
     ManageRolesComponent,
     RefCatTaxComponent,
     RefSubCatTaxComponent,
-    DepositComponent
+    DepositComponent,
+    ManageRegionsComponent
   ],
   imports: [
     BrowserModule,

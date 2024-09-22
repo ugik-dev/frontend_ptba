@@ -8,6 +8,7 @@ import { ManageRolesComponent } from './manage-roles/manage-roles.component';
 import { RefCatTaxComponent } from './ref-cat-tax/ref-cat-tax.component';
 import { RefSubCatTaxComponent } from './ref-sub-cat-tax/ref-sub-cat-tax.component';
 import { DepositComponent } from './deposit/deposit.component';
+import { ManageRegionsComponent } from './manage-regions/manage-regions.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'deposit', component: DepositComponent, canActivate: [AuthGuard] },
   { path: 'manage-users', component: ManageUsersComponent, canActivate: [AuthGuard] },
   { path: 'manage-roles', component: ManageRolesComponent, canActivate: [AuthGuard] },
+  { path: 'manage-regions', component: ManageRegionsComponent, canActivate: [AuthGuard] },
   { path: 'manage-ref/category-tax', component: RefCatTaxComponent, canActivate: [AuthGuard] },
   { path: 'manage-ref/sub-category-tax', component: RefSubCatTaxComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
