@@ -26,16 +26,16 @@ export class RefService {
   getTax(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}tax`, { headers: this.getAuthHeaders() });
   }
-  getSubTax(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}sub-tax`, { headers: this.getAuthHeaders() });
+  getSubTax(parent: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}sub-tax/${parent}`, { headers: this.getAuthHeaders() });
   }
 
-  getRegion(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}region`, { headers: this.getAuthHeaders() });
+  getRegion(parent = ""): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}region/${parent}`, { headers: this.getAuthHeaders() });
   }
 
   getProvince(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}region/province/`, { headers: this.getAuthHeaders() });
+    return this.http.get<any>(`${this.baseUrl}region/province`, { headers: this.getAuthHeaders() });
   }
 
 }

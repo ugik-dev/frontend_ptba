@@ -1,31 +1,131 @@
 <app-navbar />
 <div class="container mt-5">
-  <button class="btn btn-lg btn-outline-primary" (click)="create_new(content)">
+  <button class="btn btn-sm btn-outline-primary" (click)="create_new(content)">
     Create New
   </button>
+  <form id="form_filter">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="row mb-3">
+            <label
+              for="colFormLabelSm"
+              class="col-sm-6 col-form-label col-form-label-sm"
+              >Dari Tanggal
+            </label>
+            <div class="col-sm-6">
+              <input
+                [(ngModel)]="selectFilter.startDate"
+                (change)="loadDeposit()"
+                type="date"
+                name="startDate"
+                class="form-control form-control-sm"
+                id="colFormLabelSm"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="row mb-3">
+            <label
+              for="colFormLabelSm"
+              class="col-sm-6 col-form-label col-form-label-sm"
+              >Sampai Tanggal
+            </label>
+            <div class="col-sm-6">
+              <input
+                [(ngModel)]="selectFilter.endDate"
+                (change)="loadDeposit()"
+                type="date"
+                name="endDate"
+                class="form-control form-control-sm"
+                id="colFormLabelSm"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="row mb-3">
+            <label
+              for="colFormLabelSm"
+              class="col-sm-6 col-form-label col-form-label-sm"
+              >Penerima
+            </label>
+            <div class="col-sm-6">
+              <select
+                [(ngModel)]="selectFilter.refTax"
+                (change)="loadDeposit()"
+                name="refTax"
+                class="form-control form-control-sm"
+                id="colFormLabelSm"
+              >
+                <option value="" selected>-- Semua --</option>
+                <option *ngFor="let refTax of refTaxs" [value]="refTax.id">
+                  {{ refTax.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="row mb-3">
+            <label
+              for="colFormLabelSm"
+              class="col-sm-6 col-form-label col-form-label-sm"
+              >Wilayah
+            </label>
+            <div class="col-sm-6">
+              <select
+                [(ngModel)]="selectFilter.refRegion"
+                (change)="loadDeposit()"
+                name="refRegion"
+                class="form-control form-control-sm"
+                id="colFormLabelSm"
+              >
+                <option value="" selected>-- Semua --</option>
+                <option *ngFor="let refTax of refRegions" [value]="refTax.id">
+                  {{ refTax.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
   <table class="table">
     <thead>
       <tr>
         <th scope="col">ID</th>
-        <th scope="col">Name</th>
+        <th scope="col">Tanggal</th>
+        <th scope="col">Jam</th>
+        <th scope="col">Nominal</th>
         <th scope="col">Kategori</th>
+        <th scope="col">Sub Kategori</th>
+        <th scope="col">Wilayah</th>
+        <th scope="col">Sub Wilayah</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let deposit of depositData">
-        <td>{{ deposit.id }}</td>
-        <td>{{ deposit.name }}</td>
-        <td>{{ deposit.ref_tax_abbr }}</td>
+      <tr *ngFor="let region of regions">
+        <td>{{ region.id }}</td>
+        <td>{{ formatRegionDate(region.createdAt) }}</td>
+        <td>{{ formatRegionHour(region.createdAt) }}</td>
+        <td>{{ formatAmount(region.amount, false) }}</td>
+        <td>{{ region.ref_tax_abbr }}</td>
+        <td>{{ region.ref_sub_tax_name }}</td>
+        <td>{{ region.ref_region_name }}</td>
+        <td>{{ region.region_name }}</td>
         <td>
           <button
             class="btn btn-warning me-2"
-            (click)="editDeposit(deposit, content)"
+            (click)="editRegion(region, content)"
           >
             Edit
           </button>
 
-          <button class="btn btn-danger" (click)="deleteDeposit(deposit.id)">
+          <button class="btn btn-danger" (click)="deleteRegion(region.id)">
             Delete
           </button>
         </td>
@@ -35,7 +135,7 @@
   <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">
-        {{ selectedDeposit?.id ? "Edit Deposit" : "Create New Deposit" }}
+        {{ selectDeposit?.id ? "Edit Region" : "Create New Region" }}
       </h4>
       <button
         type="button"
@@ -47,25 +147,74 @@
     <div class="modal-body">
       <form>
         <div class="mb-3">
-          <label for="name" class="form-label">Name</label>
+          <label for="amount" class="form-label">Amount</label>
           <input
             type="text"
             class="form-control"
-            [(ngModel)]="selectedDeposit.name"
-            name="name"
+            [(ngModel)]="selectDeposit.amount"
+            (input)="onAmountChange($event)"
+            (blur)="onBlur()"
+            name="amount"
             required
           />
         </div>
         <div class="mb-3">
-          <label for="role" class="form-label">Role</label>
+          <label for="ref_tax_id" class="form-label">Penerimaan</label>
           <select
             class="form-select"
-            [(ngModel)]="selectedDeposit.ref_tax_id"
-            name="role"
+            [(ngModel)]="selectDeposit.ref_tax_id"
+            (change)="onRefTaxChange()"
+            name="ref_tax_id"
             required
           >
+            <option value="" disabled selected>Pilih Penerima</option>
             <option *ngFor="let refTax of refTaxs" [value]="refTax.id">
               {{ refTax.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="ref_sub_tax_id" class="form-label">Jenis</label>
+          <select
+            class="form-select"
+            [(ngModel)]="selectDeposit.ref_sub_tax_id"
+            name="ref_sub_tax_id"
+            required
+          >
+            <option value="" disabled selected>Pilih Penerima</option>
+            <option *ngFor="let refSubTax of refSubTaxs" [value]="refSubTax.id">
+              {{ refSubTax.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="ref_region_id" class="form-label">Katergori</label>
+          <select
+            class="form-select"
+            [(ngModel)]="selectDeposit.ref_region_id"
+            (change)="onCategoryChange()"
+            name="ref_region_id"
+            required
+          >
+            <option value="" disabled selected>Pilih Kategori</option>
+            <option *ngFor="let refRegion of refRegions" [value]="refRegion.id">
+              {{ refRegion.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="province" class="form-label">Province</label>
+          <select
+            class="form-select"
+            [(ngModel)]="selectDeposit.region_id"
+            name="province"
+          >
+            <option value="">-</option>
+            <option
+              *ngFor="let refSubRegion of refSubRegions"
+              [value]="refSubRegion.id"
+            >
+              {{ refSubRegion.name }}
             </option>
           </select>
         </div>
@@ -79,12 +228,8 @@
       >
         Close
       </button>
-      <button
-        type="button"
-        class="btn btn-primary"
-        (click)="saveDeposit(modal)"
-      >
-        {{ selectedDeposit?.id ? "Update" : "Create" }}
+      <button type="button" class="btn btn-primary" (click)="saveRegion(modal)">
+        {{ selectDeposit?.id ? "Update" : "Create" }}
       </button>
     </div>
   </ng-template>

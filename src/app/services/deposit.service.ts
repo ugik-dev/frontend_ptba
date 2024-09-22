@@ -8,15 +8,15 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class DepositService {
-  private baseUrl = `${env.baseUrl}/manage-ref-sub-tax`;
+  private baseUrl = `${env.baseUrl}/deposit`;
   constructor(private http: HttpClient, private authService: AuthService) { }
-
   private getAuthHeaders(): HttpHeaders {
     return new HttpHeaders(this.authService.getAuthHeaders());
   }
-
-  get(): Observable<any> {
-    return this.http.get<any>(this.baseUrl, { headers: this.getAuthHeaders() });
+  get(filter: any): Observable<any> {
+    console.log(filter)
+    const params = filter
+    return this.http.get<any>(this.baseUrl, { params, headers: this.getAuthHeaders() });
   }
   create(reftaxData: any): Observable<any> {
     return this.http.post(this.baseUrl, reftaxData, { headers: this.getAuthHeaders() });

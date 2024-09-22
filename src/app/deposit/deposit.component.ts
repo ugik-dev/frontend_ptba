@@ -2,6 +2,8 @@ import { Component, inject, TemplateRef } from '@angular/core';
 import { DepositService } from './../services/deposit.service';
 import { RefService } from './../services/ref.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { formatDate, formatHour, formatIDR } from '../utils/formater';
+
 
 @Component({
   selector: 'app-deposit',
@@ -9,20 +11,37 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './deposit.component.css'
 })
 export class DepositComponent {
-  depositData: any[] = [];
+  regions: any[] = [];
+  roles: any[] = [];
+  refRegions: any[] = [];
   refTaxs: any[] = [];
+  refSubTaxs: any[] = [];
+  refSubRegions: any[] = [];
+  rawAmount: number = 0;
   private modalService = inject(NgbModal);
   closeResult = '';
-
-  selectedDeposit: any = null;
-  constructor(private depositService: DepositService, private refService: RefService,
+  selectDeposit: any = { amount: '' };
+  selectFilter: any = {
+    startDate: '',
+    endDate: '',
+    refTax: '',
+    refRegion: ''
+  };
+  // filter = {
+  //   startDate: '',
+  //   endDate: ''
+  // };
+  constructor(
+    private depositService: DepositService,
+    private refService: RefService,
   ) { }
 
   ngOnInit(): void {
     this.loadDeposit();
-    this.loadRefTaxs();
+    this.loadReference();
   }
-  loadRefTaxs(): void {
+
+  loadReference(): void {
     this.refService.getTax().subscribe(
       (data) => {
         this.refTaxs = data;
@@ -31,70 +50,132 @@ export class DepositComponent {
         console.error('Error fetching users', error);
       }
     );
-  }
-
-  loadDeposit(): void {
-    this.depositService.get().subscribe(
+    this.refService.getRegion().subscribe(
       (data) => {
-        this.depositData = data;
+        this.refRegions = data;
       },
       (error) => {
-        console.error('Error fetching deposits', error);
+        console.error('Error fetching users', error);
+      }
+    );
+  }
+  onCategoryChange() {
+    this.refService.getRegion(this.selectDeposit.ref_region_id).subscribe(
+      (data) => {
+        this.refSubRegions = data;
+      },
+      (error) => {
+        console.error('Error fetching users', error);
+      }
+    );
+  }
+  onRefTaxChange() {
+    this.refService.getSubTax(this.selectDeposit.ref_tax_id).subscribe(
+      (data) => {
+        this.refSubTaxs = data;
+      },
+      (error) => {
+        console.error('Error fetching users', error);
+      }
+    );
+  }
+
+
+  loadDeposit(): void {
+    console.log(this.selectFilter)
+    this.depositService.get(this.selectFilter).subscribe(
+      (data) => {
+        this.regions = data;
+      },
+      (error) => {
+        console.error('Error fetching regions', error);
       }
     );
   }
 
   create_new(content: TemplateRef<any>) {
-    this.selectedDeposit = {};
+    this.selectDeposit = {};
+    this.refSubTaxs = [];
+    this.refSubRegions = [];
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
     );
   }
-  editDeposit(deposit: any, content: TemplateRef<any>): void {
-    this.selectedDeposit = { ...deposit, password: '' }; // Clone the deposit for editing
+  editRegion(region: any, content: TemplateRef<any>): void {
+    this.selectDeposit = { ...region }; // Clone the region for editing
+    this.onCategoryChange();
+    this.onRefTaxChange();
+    this.selectDeposit.amount = formatIDR(this.selectDeposit.amount)
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-
     );
   }
 
-  saveDeposit(modal: any): void {
-    if (this.selectedDeposit.id) {
-      console.log(this.selectedDeposit)
-      this.depositService.update(this.selectedDeposit.id, this.selectedDeposit).subscribe(
+  saveRegion(modal: any): void {
+    if (this.selectDeposit.id) {
+      console.log(this.selectDeposit)
+      this.depositService.update(this.selectDeposit.id, this.selectDeposit).subscribe(
         () => {
           this.loadDeposit();
+          // this.loadRefProvince();
+
           modal.close();
         },
         (error) => {
           alert(error.error.message ?? "Something error");
-          console.error('Error updating deposit:', error);
+          console.error('Error updating region:', error);
         }
       );
     } else {
-      console.log(this.selectedDeposit)
-      this.depositService.create(this.selectedDeposit).subscribe(
+      console.log(this.selectDeposit)
+      this.depositService.create(this.selectDeposit).subscribe(
         () => {
           this.loadDeposit();
+          // this.loadRefProvince();
+
           modal.close();
         },
         (error) => {
           alert(error.error.message ?? "Something error");
-          console.error('Error creating deposit:', error);
+          console.error('Error creating region:', error);
         }
       );
     }
   }
 
-  deleteDeposit(depositId: number): void {
-    if (confirm('Are you sure you want to delete this deposit?')) {
-      this.depositService.delete(depositId).subscribe(
+  deleteRegion(regionId: number): void {
+    if (confirm('Are you sure you want to delete this region?')) {
+      this.depositService.delete(regionId).subscribe(
         () => {
-          this.depositData = this.depositData.filter(deposit => deposit.id !== depositId);
+          this.regions = this.regions.filter(region => region.id !== regionId);
         },
         (error) => {
           alert(error.error.message ?? "Something error");
-          console.error('Error deleting deposit:', error);
+          console.error('Error deleting region:', error);
         }
       );
     }
+  }
+
+  onAmountChange(event: any) {
+    const inputValue = event.target.value.replace(/[^0-9]/g, '');
+    const numericValue = inputValue ? Number(inputValue) : 0;
+    this.selectDeposit.amount = this.formatAmount(numericValue);
+  }
+
+  formatAmount(amount: number, prefix = true): string {
+    return formatIDR(amount, prefix);
+  }
+
+  onBlur() {
+    if (!this.selectDeposit.amount || this.selectDeposit.amount === 'Rp 0,00') {
+      this.selectDeposit.amount = this.formatAmount(0);
+    }
+  }
+
+  formatRegionDate(date: any): string {
+    return formatDate(date);
+  }
+
+  formatRegionHour(date: any): string {
+    return formatHour(date);
   }
 }
