@@ -103,6 +103,8 @@ export class ManageRegionsComponent {
       this.regionService.update(this.selectedRegion.id, this.selectedRegion).subscribe(
         () => {
           this.loadRegions();
+          this.loadRefProvince();
+
           modal.close();
         },
         (error) => {
@@ -115,6 +117,8 @@ export class ManageRegionsComponent {
       this.regionService.create(this.selectedRegion).subscribe(
         () => {
           this.loadRegions();
+          this.loadRefProvince();
+
           modal.close();
         },
         (error) => {
