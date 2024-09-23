@@ -20,6 +20,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { SummaryComponent } from './summary/summary.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
     RefCatTaxComponent,
     RefSubCatTaxComponent,
     DepositComponent,
-    ManageRegionsComponent
+    ManageRegionsComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,

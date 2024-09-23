@@ -9,11 +9,13 @@ import { RefCatTaxComponent } from './ref-cat-tax/ref-cat-tax.component';
 import { RefSubCatTaxComponent } from './ref-sub-cat-tax/ref-sub-cat-tax.component';
 import { DepositComponent } from './deposit/deposit.component';
 import { ManageRegionsComponent } from './manage-regions/manage-regions.component';
+import { SummaryComponent } from './summary/summary.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'deposit', component: DepositComponent, canActivate: [AuthGuard] },
+  { path: 'summary', component: SummaryComponent, canActivate: [AuthGuard] },
   { path: 'manage-users', component: ManageUsersComponent, canActivate: [AuthGuard] },
   { path: 'manage-roles', component: ManageRolesComponent, canActivate: [AuthGuard] },
   { path: 'manage-regions', component: ManageRegionsComponent, canActivate: [AuthGuard] },

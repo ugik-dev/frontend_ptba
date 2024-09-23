@@ -19,25 +19,45 @@
             >Dashboard</a
           >
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/manage-users" routerLinkActive=""
-            >Kelola Pengguna</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/manage-roles" routerLinkActive=""
-            >Kelola Role</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/manage-regions" routerLinkActive=""
-            >Kelola Wilayah</a
-          >
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" routerLink="/deposit" routerLinkActive=""
             >Setoran</a
           >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/summary" routerLinkActive=""
+            >Summary</a
+          >
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Manage
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <a class="dropdown-item" routerLink="/manage-users"
+                >Kelola Pengguna</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/manage-roles"
+                >Kelola Role</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/manage-regions"
+                >Kelola Wilayah</a
+              >
+            </li>
+          </ul>
         </li>
         <li class="nav-item dropdown">
           <a
