@@ -114,11 +114,11 @@
     </div>
   </form>
   <mat-form-field>
-    <mat-label>Filter</mat-label>
+    <mat-label>Search</mat-label>
     <input
       matInput
       (keyup)="applyFilter($event)"
-      placeholder="Ex. Mia"
+      placeholder="Ex. Bangka Belitung"
       #input
     />
   </mat-form-field>
@@ -143,9 +143,19 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nominal</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nominal (Rp)</th>
         <td mat-cell *matCellDef="let row">
-          {{ formatAmount(row.amount) }}
+          {{ formatAmount(row.amount, false) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="percentage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Alokasi (%)</th>
+        <td mat-cell *matCellDef="let row">{{ row.alocation_percentage }} %</td>
+      </ng-container>
+      <ng-container matColumnDef="alocation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Alokasi (Rp)</th>
+        <td mat-cell *matCellDef="let row">
+          {{ formatAmount(row.alocation_amount, false) }}
         </td>
       </ng-container>
       <ng-container matColumnDef="ref_tax_abbr">
@@ -259,6 +269,19 @@
             (input)="onAmountChange($event)"
             (blur)="onBlur()"
             name="amount"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="alocation_percentage" class="form-label"
+            >Persentase Alokasi (%)</label
+          >
+          <input
+            type="number"
+            [max]="100"
+            class="form-control"
+            [(ngModel)]="selectDeposit.alocation_percentage"
+            name="alocation_percentage"
             required
           />
         </div>

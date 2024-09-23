@@ -53,7 +53,8 @@ export class DepositComponent {
     refRegion: ''
   };
   displayedColumns: string[] =
-    ['id', 'dateCreate', 'hourCreate', 'amount',
+    ['id', 'dateCreate', 'hourCreate',
+      'amount', 'percentage', 'alocation',
       'ref_tax_abbr', 'ref_sub_tax_name',
       'ref_region_name', 'region_name',
       'action'];
