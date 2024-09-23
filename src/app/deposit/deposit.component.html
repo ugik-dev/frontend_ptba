@@ -1,99 +1,203 @@
 <app-navbar />
 <div class="container mt-5">
-  <button class="btn btn-sm btn-outline-primary" (click)="create_new(content)">
-    Create New
-  </button>
   <form id="form_filter">
     <div class="col-lg-12">
       <div class="row">
-        <div class="col-lg-4">
-          <div class="row mb-3">
-            <label
-              for="colFormLabelSm"
-              class="col-sm-6 col-form-label col-form-label-sm"
-              >Dari Tanggal
-            </label>
-            <div class="col-sm-6">
-              <input
-                [(ngModel)]="selectFilter.startDate"
-                (change)="loadDeposit()"
-                type="date"
-                name="startDate"
-                class="form-control form-control-sm"
-                id="colFormLabelSm"
-              />
+        <div class="col-lg-2 mb-2">
+          <button
+            class="btn btn-sm w-100 mr-2 ml-2 mb-3 btn-outline-primary me-2"
+            (click)="create_new(content)"
+          >
+            Create New
+          </button>
+          <button
+            class="btn w-100 mr-2 ml-2 mb-2 btn-sm btn-outline-success"
+            (click)="exportToExcel()"
+          >
+            Export as Excel
+          </button>
+        </div>
+        <div class="col-lg-8">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="row mb-3">
+                <label
+                  for="colFormLabelSm"
+                  class="col-sm-6 col-form-label col-form-label-sm"
+                  >Dari Tanggal
+                </label>
+                <div class="col-sm-6">
+                  <input
+                    [(ngModel)]="selectFilter.startDate"
+                    (change)="loadDeposit()"
+                    type="date"
+                    name="startDate"
+                    class="form-control form-control-sm"
+                    id="colFormLabelSm"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="row mb-3">
+                <label
+                  for="colFormLabelSm"
+                  class="col-sm-6 col-form-label col-form-label-sm"
+                  >Sampai Tanggal
+                </label>
+                <div class="col-sm-6">
+                  <input
+                    [(ngModel)]="selectFilter.endDate"
+                    (change)="loadDeposit()"
+                    type="date"
+                    name="endDate"
+                    class="form-control form-control-sm"
+                    id="colFormLabelSm"
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="row mb-3">
-            <label
-              for="colFormLabelSm"
-              class="col-sm-6 col-form-label col-form-label-sm"
-              >Sampai Tanggal
-            </label>
-            <div class="col-sm-6">
-              <input
-                [(ngModel)]="selectFilter.endDate"
-                (change)="loadDeposit()"
-                type="date"
-                name="endDate"
-                class="form-control form-control-sm"
-                id="colFormLabelSm"
-              />
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="row mb-3">
+                <label
+                  for="colFormLabelSm"
+                  class="col-sm-6 col-form-label col-form-label-sm"
+                  >Penerima
+                </label>
+                <div class="col-sm-6">
+                  <select
+                    [(ngModel)]="selectFilter.refTax"
+                    (change)="loadDeposit()"
+                    name="refTax"
+                    class="form-control form-control-sm"
+                    id="colFormLabelSm"
+                  >
+                    <option value="" selected>-- Semua --</option>
+                    <option *ngFor="let refTax of refTaxs" [value]="refTax.id">
+                      {{ refTax.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="row mb-3">
-            <label
-              for="colFormLabelSm"
-              class="col-sm-6 col-form-label col-form-label-sm"
-              >Penerima
-            </label>
-            <div class="col-sm-6">
-              <select
-                [(ngModel)]="selectFilter.refTax"
-                (change)="loadDeposit()"
-                name="refTax"
-                class="form-control form-control-sm"
-                id="colFormLabelSm"
-              >
-                <option value="" selected>-- Semua --</option>
-                <option *ngFor="let refTax of refTaxs" [value]="refTax.id">
-                  {{ refTax.name }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="row mb-3">
-            <label
-              for="colFormLabelSm"
-              class="col-sm-6 col-form-label col-form-label-sm"
-              >Wilayah
-            </label>
-            <div class="col-sm-6">
-              <select
-                [(ngModel)]="selectFilter.refRegion"
-                (change)="loadDeposit()"
-                name="refRegion"
-                class="form-control form-control-sm"
-                id="colFormLabelSm"
-              >
-                <option value="" selected>-- Semua --</option>
-                <option *ngFor="let refTax of refRegions" [value]="refTax.id">
-                  {{ refTax.name }}
-                </option>
-              </select>
+            <div class="col-lg-6">
+              <div class="row mb-3">
+                <label
+                  for="colFormLabelSm"
+                  class="col-sm-6 col-form-label col-form-label-sm"
+                  >Wilayah
+                </label>
+                <div class="col-sm-6">
+                  <select
+                    [(ngModel)]="selectFilter.refRegion"
+                    (change)="loadDeposit()"
+                    name="refRegion"
+                    class="form-control form-control-sm"
+                    id="colFormLabelSm"
+                  >
+                    <option value="" selected>-- Semua --</option>
+                    <option
+                      *ngFor="let refTax of refRegions"
+                      [value]="refTax.id"
+                    >
+                      {{ refTax.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </form>
-  <table class="table">
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex. Mia"
+      #input
+    />
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="dateCreate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+        <td mat-cell *matCellDef="let row">
+          {{ formatRegionDate(row.createdAt) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="hourCreate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hour</th>
+        <td mat-cell *matCellDef="let row">
+          {{ formatRegionHour(row.createdAt) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nominal</th>
+        <td mat-cell *matCellDef="let row">
+          {{ formatAmount(row.amount) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="ref_tax_abbr">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Kategori</th>
+        <td mat-cell *matCellDef="let row">{{ row.ref_tax_abbr }}</td>
+      </ng-container>
+      <ng-container matColumnDef="ref_sub_tax_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Kategori</th>
+        <td mat-cell *matCellDef="let row">{{ row.ref_sub_tax_name }}</td>
+      </ng-container>
+      <!-- Fruit Column -->
+      <ng-container matColumnDef="ref_region_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Wilayah</th>
+        <td mat-cell *matCellDef="let row">{{ row.ref_region_name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="region_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sub Wilayah</th>
+        <td mat-cell *matCellDef="let row">{{ row.region_name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sub Wilayah</th>
+        <td mat-cell *matCellDef="let row">
+          <button
+            class="btn btn-warning me-2"
+            (click)="editRegion(row, content)"
+          >
+            Edit
+          </button>
+
+          <button class="btn btn-danger" (click)="deleteRegion(row.id)">
+            Delete
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          No data matching the filter "{{ input.value }}"
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[10, 25, 100]"
+      aria-label="Select page of deposit"
+    ></mat-paginator>
+  </div>
+
+  <!-- <table class="table">
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -131,7 +235,7 @@
         </td>
       </tr>
     </tbody>
-  </table>
+  </table> -->
   <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">
@@ -196,18 +300,18 @@
             name="ref_region_id"
             required
           >
-            <option value="" disabled selected>Pilih Kategori</option>
+            <option value="" disabled selected>Wilayah</option>
             <option *ngFor="let refRegion of refRegions" [value]="refRegion.id">
               {{ refRegion.name }}
             </option>
           </select>
         </div>
         <div class="mb-3">
-          <label for="province" class="form-label">Province</label>
+          <label for="region_id" class="form-label">Sub Wilayah</label>
           <select
             class="form-select"
             [(ngModel)]="selectDeposit.region_id"
-            name="province"
+            name="region_id"
           >
             <option value="">-</option>
             <option

@@ -14,7 +14,12 @@ import { RefCatTaxComponent } from './ref-cat-tax/ref-cat-tax.component';
 import { RefSubCatTaxComponent } from './ref-sub-cat-tax/ref-sub-cat-tax.component';
 import { DepositComponent } from './deposit/deposit.component';
 import { ManageRegionsComponent } from './manage-regions/manage-regions.component';
-
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { provideAnimations } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,10 +38,12 @@ import { ManageRegionsComponent } from './manage-regions/manage-regions.componen
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    NgbModule
+    MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule,
+    NgbModule,
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideAnimations()
   ],
   bootstrap: [AppComponent]
 })
