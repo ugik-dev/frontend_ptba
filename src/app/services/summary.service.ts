@@ -1,0 +1,21 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { env } from '../../env';
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SummaryService {
+  private baseUrl = `${env.baseUrl}/summary`;
+  constructor(private http: HttpClient, private authService: AuthService) { }
+  private getAuthHeaders(): HttpHeaders {
+    return new HttpHeaders(this.authService.getAuthHeaders());
+  }
+  get(filter: any): Observable<any> {
+    console.log(filter)
+    const params = filter
+    return this.http.get<any>(this.baseUrl, { params, headers: this.getAuthHeaders() });
+  }
+}
